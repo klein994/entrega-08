@@ -1,0 +1,66 @@
+
+<div class="container " style="padding: 50px 0 0 0">
+        <div class="row">
+            <div class="col-md-4" style="padding: 15px;background-color: #efefef;border-radius: 5px">
+                <h3>NUEVO ARTÍCULO</h3>
+              
+                    <div class="form-group">
+                        <label>Nombre:</label>
+                        <input type="text" id="tittle" name="tittle" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Precio:</label>
+                        <input type="number" id="price" name="price" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Imagen Url:</label>
+                       
+                        <select name="thumbnail" id="thumbnail" required class="form-control">
+                            <option selected disabled  value="">Seleccionar imagen</option>
+                            <option  value="https://cdn3.iconfinder.com/data/icons/education-209/64/plane-paper-toy-science-school-256.png">avión</option>
+                            <option value="https://cdn3.iconfinder.com/data/icons/education-209/64/globe-earth-geograhy-planet-school-128.png">Globo terráqueo</option>
+                            <option  value="https://cdn3.iconfinder.com/data/icons/education-209/64/calculator-math-tool-school-128.png">Calculadora</option>
+                            <option  value="https://cdn3.iconfinder.com/data/icons/education-209/64/ruler-triangle-stationary-school-256.png">Reglas</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" id="botonEnviar" class="btn btn-md btn-success btn-block">Enviar</button>
+                    </div>
+             
+                
+            </div>
+            <div class="col-md-8">
+              
+   {{#if hayProductos}}
+
+<h2>Lista de Articulos</h2>
+
+<div class="table-responsive">
+    <table class="table table-hover table-striped">
+        <tr>
+          
+            <th>Imagen</th>
+            <th>Nombre</th>
+            <th>Precio</th>
+            <th>Eliminar</th>
+        </tr>
+        {{#each DBproductos}}
+        <tr>
+            
+            <td><img src="{{this.thumbnail}}" width="40" alt=""></td>
+            <td>{{this.tittle}}</td>
+            <td>{{this.price}}</td>
+            <td>  <button class="btn btn-danger" disabled>Eliminar</button></td>
+        </tr>
+        {{/each}}
+    </table>
+</div>
+{{else}}
+<p class="alert alert-warning">No hay Artículos para mostrar...</p>
+{{/if}}
+               
+               
+               </div>
+        </div>
+        <hr>
+    </div>

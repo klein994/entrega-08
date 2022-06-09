@@ -1,0 +1,20 @@
+[
+  {
+    "autor": "Alberto",
+    "texto": "Un mensaje ",
+    "fecha": "2022/6/5 20:42:54",
+    "id": "1654472574490"
+  },
+  {
+    "autor": "Pepe",
+    "texto": "Mensaje 2",
+    "fecha": "2022/6/5 20:47:22",
+    "id": "1654472842584"
+  },
+  {
+    "autor": "Alberto",
+    "texto": "Otro mensaje",
+    "fecha": "2022/6/5 21:5:16",
+    "id": "1654473916426"
+  }
+]

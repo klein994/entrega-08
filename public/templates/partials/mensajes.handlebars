@@ -1,0 +1,61 @@
+<div class="container" style="padding: 0 0 50px 0">
+  <div class="row">
+    <div
+      class="col-md-4"
+      style="padding: 15px;background-color: #efefef;border-radius: 5px"
+    >
+      <h3>NUEVO MENSAJE</h3>
+
+      <div class="form-group">
+        <label>Remitente:</label>
+        <input type="text" id="autor" class="form-control" required />
+      </div>
+
+      <label>Mensaje:</label>
+      <textarea
+        class="form-group"
+        id="texto"
+        style="width: 100%;"
+        rows="3"
+      ></textarea>
+
+      <div class="form-group">
+        <button
+          id="botonEnviarMensaje"
+          class="btn btn-md btn-success btn-enviar btn-block"
+        >Enviar</button>
+      </div>
+
+    </div>
+    <div class="col-md-8" >
+     
+{{#if hayMensajes}}
+
+<h2>Lista de Mensajes</h2>
+
+<div class="table-responsive">
+    <table class="table table-hover table-striped">
+        <tr>
+           
+            <th>Fecha</th>
+            <th>Remitente</th>
+            <th>Mensaje</th>
+           
+        </tr>
+        {{#each DBmensajes}}
+        <tr>
+             
+            <td>{{this.fecha}}</td>
+            <td>{{this.autor}}</td>
+            <td>{{this.texto}}</td>
+        
+        </tr>
+        {{/each}}
+    </table>
+</div>
+{{else}}
+<p class="alert alert-warning">No hay mensajes para mostrar...</p>
+{{/if}}
+    </div>
+  </div>
+</div>

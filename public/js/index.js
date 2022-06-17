@@ -1,62 +1,64 @@
-const socket = io()
+const socket = io();
 
-socket.on('connectionToServer', async({ DBproductos, DBmensajes }) => {
-    await mostrar('formProducts', 'templates/datos.handlebars', {});
-    actualizarProductos(DBproductos);
-    await actualizarMensajes(DBmensajes);
+socket.on('connectionToServer', async ({ array_productos, array_mensajes }) => {
+    await mostrar('formProducts', 'templates/form.handlebars', {});
+    actualizarProductos(array_productos);
+    mostrar('mensajes', 'templates/messages.handlebars', {});
+    await actualizarMensajes(array_mensajes);
     agregarFuncionABotones();
 });
 
-socket.on('actualizarTabla', ({ DBproductos }) => {
-    actualizarProductos(DBproductos);
+socket.on('actualizarTabla', ({ array_productos }) => {
+    actualizarProductos(array_productos);
 });
 
-socket.on('actualizarMensajes', ({ DBmensajes }) => {
-    actualizarMensajes(DBmensajes);
+socket.on('actualizarMensajes', ({ array_mensajes }) => {
+    actualizarMensajes(array_mensajes);
 })
 
-const actualizarProductos = async(DBproductos) => {
-    let context = { DBproductos, hayProductos: DBproductos.length > 0, total: DBproductos.length };
-    mostrar('products', 'templates/partials/productos.handlebars', context);
+const actualizarProductos = async (array_productos) => {
+    let context = { titulo:"Productos", array_productos, hayProductos: array_productos.length > 0, total: array_productos.length };
+    mostrar('tableProducts', 'templates/table.handlebars', context);
 }
 
-const actualizarMensajes = async(DBmensajes) => {
-    context = { DBmensajes, hayMensajes: DBmensajes.length > 0 }
-    await mostrar('mensajes', 'templates/partials/mensajes.handlebars', context);
+const actualizarMensajes = async (array_mensajes) => {
+    let context = { array_mensajes, hayMensajes: array_mensajes.length > 0 }
+    await mostrar('tableMensajes', 'templates/tableMessages.handlebars', context);
 }
 
 function agregarFuncionABotones() {
     const btn = document.getElementById('botonEnviar')
     btn.addEventListener('click', event => {
-        const tittle = document.getElementById('tittle').value
+        const title = document.getElementById('title').value
         const price = document.getElementById('price').value
         const thumbnail = document.getElementById('thumbnail').value
-        if (tittle.length > 0 && price.length > 0 && thumbnail.length > 0) {
-            socket.emit('agregarProducto', { tittle, price, thumbnail })
+        if(title.length>0 && price.length>0 && thumbnail.length>0){
+            socket.emit('agregarProducto', { title, price, thumbnail })
         } else {
             alert('Todos los campos son obligatorios')
         }
     })
     const btn2 = document.getElementById("botonEnviarMensaje")
     btn2.addEventListener('click', event => {
-        const autor = document.getElementById('autor').value
-        const texto = document.getElementById('texto').value
-        const date = new Date();
-        const fecha = date.getFullYear() + "/" + (date.getMonth() + 1) + "/" + date.getDate() + " " + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
-        if (autor.length > 0 && texto.length > 0) {
-            socket.emit('enviarMensaje', { autor, texto, fecha })
+        const email = document.getElementById('email').value
+        const mensaje = document.getElementById('mensaje').value
+        const fecha = new Date();
+        const fechaString = fecha.getFullYear() + "/" + (fecha.getMonth() + 1) + "/" + fecha.getDate() + " " + fecha.getHours() + ":" + fecha.getMinutes() + ":" + fecha.getSeconds();
+        if(email.length>0 && mensaje.length>0){
+            socket.emit('enviarMensaje', { email, mensaje, fechaString })
         } else {
             alert('Todos los campos son obligatorios')
         }
     })
+    const btn3 = document.getElementById("botonEliminarProductos")
+    btn3.addEventListener('click', event => {
+        socket.emit("eliminarProductos")
+    })
+    const btn4 = document.getElementById("botonEliminarMensajes")
+    btn4.addEventListener('click', event => {
+        socket.emit("eliminarMensajes")
+    })
 }
-
-const urls = {
-    datos: 'static/templates/datos.handlebars',
-    mensajes: 'static/templates/partials/mensajes.handlebars',
-    productos: 'static/templates/partials/productos.handlebars'
-}
-
 
 async function mostrar(id, template, context) {
     const divProductos = document.getElementById(id);
@@ -74,5 +76,17 @@ function buscarPlantilla(url) {
     return fetch(url).then(res => res.text())
 }
 
-cargarPartial('mensajes', urls.mensajes)
-cargarPartial('productos', urls.productos)
+function eliminarProducto(id) {
+    socket.emit('eliminarProducto', id);
+}
+
+function editarProducto(id) {
+    const title = document.getElementById('title').value
+    const price = document.getElementById('price').value
+    const thumbnail = document.getElementById('thumbnail').value
+    if(title.length>0 && price.length>0 && thumbnail.length>0){
+        socket.emit('editarProducto', id, { title, price, thumbnail });
+    } else {
+        alert('Todos los campos son obligatorios')
+    }
+}

@@ -89,3 +89,8 @@ typings/
 # DynamoDB Local files
 .dynamodb/
 
+.idea/vcs.xml
+.idea/modules.xml
+.idea/entrega-08.iml
+.idea/jsLibraryMappings.xml
+.idea/workspace.xml

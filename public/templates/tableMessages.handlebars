@@ -1,0 +1,31 @@
+<div class="">
+
+    {{#if hayMensajes}}
+
+        <h2>Lista de Mensajes</h2>
+
+        <div class="table-responsive">
+            <table class="table table-hover table-striped">
+                <tr>
+
+                    <th>Fecha</th>
+                    <th>Remitente</th>
+                    <th>Mensaje</th>
+
+                </tr>
+                {{#each array_mensajes}}
+                    <tr>
+
+                        <td>{{this.fechaString}}</td>
+                        <td>{{this.email}}</td>
+                        <td>{{this.mensaje}}</td>
+
+                    </tr>
+                {{/each}}
+            </table>
+        </div>
+    {{else}}
+        <p class="alert alert-warning">No hay mensajes para mostrar...</p>
+    {{/if}}
+</div>
+

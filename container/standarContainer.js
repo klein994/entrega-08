@@ -1,6 +1,6 @@
-const { clienteSqlAdmin } = ('./database/clienteSql.js')
+import fs from 'fs'
 
-class ControladorApi {
+export default class Contenedor {
     constructor(nombreArchivo) {
         this.nombreArchivo = nombreArchivo;
     }
@@ -14,7 +14,7 @@ class ControladorApi {
     async updateById(id, producto) {
         let contenido = await this.getAll();
         let productoBuscado = contenido.find(producto => producto.id == id);
-        if (!productoBuscado) {
+        if(!productoBuscado) {
             const error = new Error('No existe un producto con ese id')
             error.tipo = 'Product not found'
             throw error;
@@ -28,7 +28,7 @@ class ControladorApi {
     async getById(id) {
         let contenido = await this.getAll();
         let object_encontrado = contenido.find(producto => producto.id == id);
-        if (!object_encontrado) {
+        if(!object_encontrado) {
             const error = new Error('No existe un producto con ese id')
             error.tipo = 'Product not found'
             throw error;
@@ -39,7 +39,8 @@ class ControladorApi {
         try {
             let contenido = await fs.promises.readFile(this.nombreArchivo, 'utf-8');
             return JSON.parse(contenido);
-        } catch (error) {
+        }
+        catch (error) {
             return [];
         }
     }
@@ -47,7 +48,7 @@ class ControladorApi {
         let contenido = await this.getAll();
         let contenidoRestante;
         contenidoRestante = contenido.filter(producto => producto.id != id);
-        if (contenidoRestante.length == contenido.length) {
+        if(contenidoRestante.length == contenido.length) {
             const error = new Error('No existe un producto con ese id')
             error.tipo = 'Product not found'
             throw error;
@@ -60,11 +61,10 @@ class ControladorApi {
 }
 
 async function sobreescribrirArchivo(nombreArchivo, datos) {
-    try {
+    try{
         await fs.promises.writeFile(nombreArchivo, JSON.stringify(datos, null, 2));
-    } catch (error) {
+    }
+    catch (error) {
         throw new Error(`Error en escritura: ${error.message}`);
     }
 }
-
-module.exports = { ControladorApi }
